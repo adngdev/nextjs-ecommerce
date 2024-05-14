@@ -7,7 +7,7 @@ type RequestBody = {
     password: string;
 }
 
-export async function POST(request: Request N) {
+export async function POST(request: Request ) {
     const body: RequestBody  = await request.json();
 
     const user = await prisma.user.findFirst({
