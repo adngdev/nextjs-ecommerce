@@ -16,6 +16,5 @@ export async function POST(request: Request) {
        }
     });
 
-    const { password, ...result } = user;
-    return new Response(JSON.stringify(result));
+    return Response.json({ message: 'Successfully created account' });
 }
