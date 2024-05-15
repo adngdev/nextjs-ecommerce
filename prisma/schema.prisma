@@ -9,7 +9,104 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String
-  password String
+  id        String   @id @default(uuid())
+  email     String
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Brand {
+  brand_id  String    @id @default(uuid())
+  name      String
+  product   Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Category {
+  category_id String            @id @default(uuid())
+  name        String
+  createdAt   DateTime          @default(now())
+  product     Product[]
+  ancestors   CategoryClosure[] @relation("ASC")
+  decendants  CategoryClosure[] @relation("DES")
+}
+
+model CategoryClosure {
+  closure_id    String   @id @default(uuid())
+  ancestor_id   String   @default(uuid())
+  descendant_id String   @default(uuid())
+  depth         Int
+  createdAt     DateTime @default(now())
+  ancestor      Category @relation("ASC", fields: [ancestor_id], references: [category_id])
+  descendant    Category @relation("DES", fields: [descendant_id], references: [category_id])
+}
+
+model Product {
+  product_id  String      @id @default(uuid())
+  name        String
+  brand_id    String
+  category_id String
+  description String?
+  image       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  category    Category    @relation(fields: [category_id], references: [category_id])
+  brand       Brand       @relation(fields: [brand_id], references: [brand_id])
+  variants    Variant[]
+  images      Image[]
+  productRef  ProductRef?
+}
+
+model ProductRef {
+  product_id    String  @id
+  shopify_bm_id String?
+  shopify_am_id String?
+  luffy_id      String?
+  dear_id       String?
+  product       Product @relation(fields: [product_id], references: [product_id])
+}
+
+model Variant {
+  variant_id     String          @id @default(uuid())
+  product_id     String
+  name           String
+  sku            String
+  colour         String
+  box_width      Decimal?
+  box_height     Decimal?
+  box_depth      Decimal?
+  product_width  Decimal?
+  product_height Decimal?
+  product_depth  Decimal?
+  product_weight Decimal?
+  image          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  product        Product         @relation(fields: [product_id], references: [product_id])
+  variantRef     VariantRef?
+  variantPricing VariantPricing?
+}
+
+model VariantRef {
+  variant_id    String  @id
+  shopify_bm_id String?
+  shopify_am_id String?
+  variant       Variant @relation(fields: [variant_id], references: [variant_id])
+}
+
+model VariantPricing {
+  variant_id   String   @id
+  retail_price Decimal?
+  sell_price   Decimal?
+  variant      Variant  @relation(fields: [variant_id], references: [variant_id])
+}
+
+model Image {
+  image_id   String   @id @default(uuid())
+  product_id String
+  url        String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  product    Product? @relation(fields: [product_id], references: [product_id])
 }
