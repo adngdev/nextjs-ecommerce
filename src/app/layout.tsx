@@ -18,7 +18,6 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                     <Toaster
                         position={`top-center`}
                         toastOptions={{
-                            unstyled: true,
                             classNames: {
                                 error: 'bg-red-400',
                                 success: 'text-green-400',

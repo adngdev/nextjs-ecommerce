@@ -18,6 +18,6 @@ export async function POST(request: Request) {
     if (user && (await bcrypt.compare(body.password, user.password))) {
         const { password, ...userWithoutPass} = user;
 
-        return Response.json({ message: 'Successfully logged in', userWithoutPass }, { status: 200 });
-    } else return Response.json({ message: 'Unauthorised' }, { status: 400 });
+        return new Response(JSON.stringify(userWithoutPass));
+    } else return new Response(JSON.stringify(null));
 }

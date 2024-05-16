@@ -11,7 +11,8 @@ import { cn } from '@/lib/utils';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { signIn } from 'next-auth/react';
+
+import { authenticateUser } from '@/app/(auth)/sign-in/action';
 
 const SignInPage = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TUserSignInValidator>({
@@ -23,12 +24,7 @@ const SignInPage = () => {
     });
 
     const onSubmit = async (data: TUserSignInValidator) => {
-        await signIn('credentials', {
-            username: data.username,
-            password: data.password,
-            redirect: true,
-            callbackUrl: '/'
-        });
+        await authenticateUser(data)
     };
 
     return (
