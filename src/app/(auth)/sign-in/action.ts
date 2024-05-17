@@ -2,8 +2,6 @@
 
 import { TUserSignInValidator, UserSignInValidator } from '@/lib/validators/user-validator';
 
-import { signIn } from '@/auth';
-
 
 
 export async function authenticateUser(data: TUserSignInValidator){
@@ -14,9 +12,4 @@ export async function authenticateUser(data: TUserSignInValidator){
     }
 
     const { username, password } = validatedFields.data;
-
-    await signIn('credentials', {
-        username,
-        password
-    })
 }
