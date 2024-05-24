@@ -24,7 +24,7 @@ const SignInPage = () => {
     });
 
     const onSubmit = async (data: TUserSignInValidator) => {
-        await authenticateUser(data)
+        await authenticateUser(data);
     };
 
     return (
